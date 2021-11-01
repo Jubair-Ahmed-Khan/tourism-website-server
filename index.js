@@ -17,14 +17,6 @@ async function run() {
         const packagesCollection = database.collection("packages");
         const destinationCollection = database.collection("destination");
         const specialityCollection = database.collection("speciality");
-        // create a document to insert
-
-        // const doc = {
-        //     name: "jubair",
-        //     email: "jubair@gmail.com"
-        // }
-        // const result = await packagesCollection.insertOne(doc);
-        // res.send(result);
 
         //GET API
 
