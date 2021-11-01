@@ -15,6 +15,7 @@ async function run() {
         await client.connect();
         const database = client.db("travel-guru");
         const packagesCollection = database.collection("packages");
+        const destinationCollection = database.collection("destination");
         // create a document to insert
 
         // const doc = {
@@ -30,6 +31,11 @@ async function run() {
             const cursor = packagesCollection.find({});
             const packages = await cursor.toArray();
             res.send(packages);
+        })
+        app.get('/destination', async (req, res) => {
+            const cursor = destinationCollection.find({});
+            const destinations = await cursor.toArray();
+            res.send(destinations);
         })
 
 
