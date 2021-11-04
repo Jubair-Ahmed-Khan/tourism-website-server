@@ -36,12 +36,6 @@ async function run() {
             res.send(specialities);
         })
 
-
-        //POST API
-        // app.post('/packages', async (req, res) => {
-        //     console.log('hitting the post');
-        //     res.send('hit the post')
-        // })
     } finally {
         //await client.close();
     }
