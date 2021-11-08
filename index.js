@@ -25,6 +25,27 @@ async function run() {
             const packages = await cursor.toArray();
             res.send(packages);
         })
+
+        app.post('/packages', async (req, res) => {
+            // console.log('hitting the post');
+            // res.send('hit the post');
+            const newUser = req.body;
+            const filter = { id: newUser.id };
+            console.log('new data : ', filter);
+            const cursor = servicesCollection.find(filter);
+            const service = await cursor.toArray();
+            console.log(service);
+            //if already have a service with this id, then no entry in DB
+            if (service.length) {
+                res.send('already have this id');
+            }
+            else {
+                const result = await servicesCollection.insertOne(newUser);
+                console.log(`Added user at index: ${result.insertedId}`);
+                console.log('Success', result);
+                res.json(result);
+            }
+        })
         app.get('/destination', async (req, res) => {
             const cursor = destinationCollection.find({});
             const destinations = await cursor.toArray();
