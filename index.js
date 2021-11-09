@@ -27,24 +27,27 @@ async function run() {
         })
 
         app.post('/packages', async (req, res) => {
-            // console.log('hitting the post');
-            // res.send('hit the post');
-            const newUser = req.body;
-            const filter = { id: newUser.id };
-            console.log('new data : ', filter);
-            const cursor = servicesCollection.find(filter);
-            const service = await cursor.toArray();
-            console.log(service);
-            //if already have a service with this id, then no entry in DB
-            if (service.length) {
-                res.send('already have this id');
-            }
-            else {
-                const result = await servicesCollection.insertOne(newUser);
-                console.log(`Added user at index: ${result.insertedId}`);
-                console.log('Success', result);
-                res.json(result);
-            }
+            const newPackage = req.body;
+            // console.log('hitting the post', newPackage);
+            const result = await packagesCollection.insertOne(newPackage);
+            // console.log(result);
+            res.json(result);
+
+            // const filter = { id: newPackage.id };
+            // console.log('new data : ', filter);
+            // const cursor = packagesCollection.find(filter);
+            // const package = await cursor.toArray();
+            // console.log(service);
+            // if already have a service with this id, then no entry in DB
+            // if (package.length) {
+            //     res.send('already have this id');
+            // }
+            // else {
+            //     const result = await packagesCollection.insertOne(newPackage);
+            //     console.log(`Added user at index: ${result.insertedId}`);
+            //     console.log('Success', result);
+            //     res.json(result);
+            // }
         })
         app.get('/destination', async (req, res) => {
             const cursor = destinationCollection.find({});
