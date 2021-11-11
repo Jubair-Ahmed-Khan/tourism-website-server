@@ -2,6 +2,7 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -10,6 +11,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 app.use(cors());
 app.use(express.json());
+
 async function run() {
     try {
         await client.connect();
@@ -52,6 +54,7 @@ async function run() {
             const result = await orderCollection.insertOne(newOrder);
             res.json(result);
         })
+
         app.get('/bookings', async (req, res) => {
             const cursor = orderCollection.find({});
             const orders = await cursor.toArray();
