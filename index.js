@@ -43,11 +43,8 @@ async function run() {
 
         app.post('/packages', async (req, res) => {
             const newPackage = req.body;
-            // console.log('hitting the post', newPackage);
             const result = await packagesCollection.insertOne(newPackage);
-            // console.log(result);
             res.json(result);
-
         })
 
         app.post('/bookings', async (req, res) => {
