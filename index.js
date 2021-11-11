@@ -17,6 +17,7 @@ async function run() {
         const packagesCollection = database.collection("packages");
         const destinationCollection = database.collection("destination");
         const specialityCollection = database.collection("speciality");
+        const orderCollection = database.collection('orders');
 
         //GET API
 
@@ -26,6 +27,20 @@ async function run() {
             res.send(packages);
         })
 
+        app.get('/destination', async (req, res) => {
+            const cursor = destinationCollection.find({});
+            const destinations = await cursor.toArray();
+            res.send(destinations);
+        })
+
+        app.get('/speciality', async (req, res) => {
+            const cursor = specialityCollection.find({});
+            const specialities = await cursor.toArray();
+            res.send(specialities);
+        })
+
+        //POST API
+
         app.post('/packages', async (req, res) => {
             const newPackage = req.body;
             // console.log('hitting the post', newPackage);
@@ -33,31 +48,17 @@ async function run() {
             // console.log(result);
             res.json(result);
 
-            // const filter = { id: newPackage.id };
-            // console.log('new data : ', filter);
-            // const cursor = packagesCollection.find(filter);
-            // const package = await cursor.toArray();
-            // console.log(service);
-            // if already have a service with this id, then no entry in DB
-            // if (package.length) {
-            //     res.send('already have this id');
-            // }
-            // else {
-            //     const result = await packagesCollection.insertOne(newPackage);
-            //     console.log(`Added user at index: ${result.insertedId}`);
-            //     console.log('Success', result);
-            //     res.json(result);
-            // }
         })
-        app.get('/destination', async (req, res) => {
-            const cursor = destinationCollection.find({});
-            const destinations = await cursor.toArray();
-            res.send(destinations);
+
+        app.post('/bookings', async (req, res) => {
+            const newOrder = req.body;
+            const result = await orderCollection.insertOne(newOrder);
+            res.json(result);
         })
-        app.get('/speciality', async (req, res) => {
-            const cursor = specialityCollection.find({});
-            const specialities = await cursor.toArray();
-            res.send(specialities);
+        app.get('/bookings', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const orders = await cursor.toArray();
+            res.send(orders);
         })
 
     } finally {
