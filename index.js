@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 
+const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -41,6 +42,19 @@ async function run() {
             res.send(specialities);
         })
 
+        app.get('/bookings', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const orders = await cursor.toArray();
+            res.send(orders);
+        })
+        app.get('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const cursor = orderCollection.find(query);
+            const order = await cursor.toArray();
+            res.send(order);
+        })
+
         //POST API
 
         app.post('/packages', async (req, res) => {
@@ -55,11 +69,34 @@ async function run() {
             res.json(result);
         })
 
-        app.get('/bookings', async (req, res) => {
-            const cursor = orderCollection.find({});
-            const orders = await cursor.toArray();
-            res.send(orders);
+        //UPDATE API
+
+        app.put('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: false };
+            const updateDoc = {
+                $set: {
+                    status: data.status
+                }
+            };
+            const result = await orderCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
         })
+
+        //DELETE API
+
+        app.delete('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            console.log(query);
+            const result = await orderCollection.deleteOne(query);
+            console.log('deleting booking with id: ', id);
+            res.json(result);
+        })
+
+
 
     } finally {
         //await client.close();
