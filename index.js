@@ -7,7 +7,7 @@ const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = process.env.PORT || 5000;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ryj5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ryj5i.mongodb.net?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
@@ -90,9 +90,7 @@ async function run() {
         app.delete('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            console.log(query);
             const result = await orderCollection.deleteOne(query);
-            console.log('deleting booking with id: ', id);
             res.json(result);
         })
 
@@ -107,5 +105,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log('Runnning server on port ', port);
+    console.log('port === ', port);
 })
