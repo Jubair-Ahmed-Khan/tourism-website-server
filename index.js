@@ -7,7 +7,7 @@ const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = process.env.PORT || 5000;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ryj5i.mongodb.net?retryWrites=true&w=majority`;
+const uri = process.env.DATABASE;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
